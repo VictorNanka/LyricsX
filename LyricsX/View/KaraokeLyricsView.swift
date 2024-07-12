@@ -65,17 +65,32 @@ class KaraokeLyricsView: NSView {
     }
     
     private func updateFontSize() {
-        var insetX = font.pointSize
-        var insetY = insetX / 3
-        if isVertical {
-            (insetX, insetY) = (insetY, insetX)
-        }
+        // Calculate insets based on font size
+        let fontPointSize = font.pointSize
+        let insetFactorX: CGFloat = 2
+        let insetFactorY: CGFloat = 0.5
+        
+        let insetX = isVertical ? fontPointSize * insetFactorY : fontPointSize * insetFactorX
+        let insetY = isVertical ? fontPointSize * insetFactorX : fontPointSize * insetFactorY
+        
+        // Define minimum and maximum spacing to ensure stability
+        let minSpacing: CGFloat = 8.0
+        let maxSpacing: CGFloat = 16.0
+        let calculatedSpacing = fontPointSize / 2
+        let stableSpacing = max(minSpacing, min(maxSpacing, calculatedSpacing))
+
+        // Update constraints using SnapKit
         stackView.snp.remakeConstraints {
             $0.edges.equalToSuperview().inset(NSEdgeInsets(top: insetY, left: insetX, bottom: insetY, right: insetX))
         }
-        stackView.spacing = font.pointSize / 3
-        backgroundView.layer?.cornerRadius = font.pointSize / 2
-//        cornerRadius = font.pointSize / 2
+        
+        // Set stable spacing for stackView
+        stackView.spacing = stableSpacing
+        
+        // Set backgroundView corner radius based on font size
+        backgroundView.layer?.cornerRadius = fontPointSize / 2
+        // If needed, uncomment the following line to set custom view's corner radius
+        // cornerRadius = fontPointSize / 2
     }
     
     private func lyricsLabel(_ content: String) -> KaraokeLabel {
