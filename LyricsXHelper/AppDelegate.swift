@@ -54,11 +54,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         for _ in 0..<4 {
             host.deleteLastPathComponent()
         }
-        do {
-            try NSWorkspace.shared.launchApplication(at: host, configuration: [:])
-            NSLog("launch LyricsX succeed.")
-        } catch {
-            NSLog("launch LyricsX failed. reason: \(error)")
+        NSWorkspace.shared.openApplication(at: host, configuration: NSWorkspace.OpenConfiguration()) { (app, error) in
+            if let error = error {
+                NSLog("launch LyricsX Helper failed. reason: \(error)")
+            } else {
+                NSLog("launch LyricsX Helper succeed.")
+            }
         }
         NSApp.terminate(nil)
         abort() // fake invoking, just make compiler happy.
