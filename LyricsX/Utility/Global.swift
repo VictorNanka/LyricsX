@@ -11,9 +11,10 @@ import Cocoa
 import CXShim
 import GenericID
 import MusicPlayer
+import Combine
 
-typealias ObservableObject = CombineX.ObservableObject
-typealias Published = CombineX.Published
+typealias ObservableObject = Combine.ObservableObject
+typealias Published = Combine.Published
 
 let fontNameFallbackCountMax = 1
 // 7 days. after this period of time since the app built, the app is not considered as "in review".
